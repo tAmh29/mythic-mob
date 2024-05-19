@@ -1,0 +1,74 @@
+NagaBossInit:
+  Skills:
+  - CancelEvent
+  - skill{s=NagaBossMelee} @self
+
+NagaBossAttack:
+  Conditions:
+  - incombat{} true
+  Skills:
+  - skill{s=NagaBossMelee} @self
+
+NagaBossMelee:
+  Cooldown: 1.0
+  Skills:
+  - state{s=attack;li=3;lo=2} @self
+  - delay 15
+  - totem{ch=3;onStart=NagaBossMeleeDamage;int=1;hR=3;md=1} @Forward{f=1.5}
+
+NagaBossMeleeDamage:
+  Skills:
+  - damage{amount=4} @PIR{r=5}
+  - effect:particles{particle=block_crack;m=redstone_block;amount=45;hS=.25;vS=1;speed=.01} @PIR{r=5}
+
+NagaBossSpinAttack:
+  Cooldown: 1.0
+  Skills:
+  - state{s=spinAttack;li=3;lo=2} @self
+  - delay 15
+  - totem{ch=3;onStart=NagaBossSpinAttackDamage;int=1;hR=3;md=1} @Forward{f=1.5}
+
+NagaBossSpinAttackDamage:
+  Skills:
+  - damage{amount=4} @PIR{r=5}
+  - effect:particles{particle=block_crack;m=redstone_block;amount=45;hS=.25;vS=1;speed=.01} @PIR{r=5}
+
+NagaBossWhirlpoolActive:
+  Conditions:
+  - incombat{} true
+  Skills:
+  - state{s=summon;li=3;lo=2} @self
+  - summon{type=NagaBossWhirlpool;amount=1;radius=3} @PIR{r=20;limit=2;sort=RANDOM}
+NagaBossWhirlpool:
+  Skills:
+  - skill{s=NagaBossBubblePhase}
+  - skill{s=NagaBossWhirlpoolPhase}
+
+NagaBossBubblePhase:
+  Conditions:
+  - stance phase2 cancel 
+  Skills:
+  - effect:particles{p=bubble_column;mr=1;h=3;i=4;d=100;rs=1;sh=1;cs=0;ca=0;chs=0.1;cvs=0.1;cps=1;cyo=2} @self ~onTimer:100
+  - effect:particletornado{p=bubble_column;cp=bubble_column;mr=1;h=3;i=4;d=100;rs=1;sh=1;cs=3;yp=-1;ca=0;chs=0.1;cvs=0.1;cps=1;cyo=0} @self
+  - damage{amount=0;pk=true} @PIR{r=3}
+
+NagaBossWhirlpoolPhase:
+  Conditions:
+  - stance phase2 required
+  Skills:
+  - sendtitle{title="Beware!";subtitle="A dangerous whirlpool is near you!";d=20} @PIR{r=10}
+  - effect:particletornado{p=sweep_attack;cp=sweep_attack;mr=1;h=3;i=4;d=100;rs=1;sh=1;cs=3;yp=-1;ca=0;chs=0.1;cvs=0.1;cps=1;cyo=0} @self
+  - damage{amount=0.1;pk=true} @PIR{r=4}
+  - pull{v=4;to=true} @PIR{r=4}
+
+NagaBossCrystallSummon:
+  Conditions:
+  - incombat{} true
+  Skills:
+  - state{s=summon;li=3;lo=2} @self
+  - summon{type=NagaBossCrystall;amount=1;radius=3;yu=true;yr=3} @self
+
+NagaBossCrystallHeal:
+  Skills:
+  - heal{amount=40} @MIR{r=20;limit=1;sort=NEAREST;t=NagaBoss}
+  - effect:particles{p=heart;amount=20;hS=0.2;vS=0.2} @self

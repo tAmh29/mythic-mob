@@ -1,0 +1,59 @@
+NagaBoss:
+  Type: DROWNED
+  Display: '&4Naga Boss'
+  Health: 2000
+  Damage: 0
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 randomstroll
+  AITargetSelectors:
+  - 0 clear
+  - 1 players
+  - 2 attacker
+  Skills:
+  - model{mid=naga_boss;n=false} @self ~onSpawn
+  - skill{s=NagaBossInit;sync=true} @self ~onAttack
+  - randomskill{skills=NagaBossAttack,NagaBossAttack,NagaBossAttack,NagaBossAttack,NagaBossAttack,NagaBossSpinAttack} ~onTimer:60
+  - skill{s=NagaBossWhirlpoolActive} @self ~onTimer:260
+  - skill{s=NagaBossCrystallSummon} @self ~onTimer:600
+  Options:
+    AlwaysShowName: false
+    Silent: true
+    MovementSpeed: 0.25
+    MaxCombatDistance: 25
+    PreventOtherDrops: true
+    KnockbackResistance: 1
+    PreventBlockInfection: true
+
+NagaBossWhirlpool:
+  Type: ENDERMITE
+  Display: "Naga Boss's Whirlpool"
+  Health: 2000
+  Options:
+    NoAI: true
+    PreventOtherDrops: true
+    NoGravity: true
+    KnockbackResistance: 1
+    PreventBlockInfection: true
+    Silent: true
+  Skills:
+  - skill{s=NagaBossWhirlpool} ~onTimer:10
+  - potion{type=INVISIBILITY;duration=200;level=1} @self ~onSpawn
+  - suicide ~onTimer:200
+  - setstance{stance=phase2} @self ~onTimer:70
+
+NagaBossCrystall:
+  Type: ENDERMITE
+  Display: "Naga Boss's Crystall"
+  Health: 50
+  Options:
+    NoAI: true
+    PreventOtherDrops: true
+    NoGravity: true
+    KnockbackResistance: 1
+    PreventBlockInfection: true
+    Silent: true
+  Skills:
+  - model{mid=naga_boss_crystal;n=false} @self ~onSpawn
+  - skill{s=NagaBossCrystallHeal} ~onTimer:40
